@@ -1,0 +1,41 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
+import 'dart:typed_data';
+import 'dart:ui';
+
+import 'package:chewie/chewie.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:intl/intl.dart';
+import 'package:seekr/services/services.dart';
+import 'package:seekr/shared/shared.dart';
+import 'package:seekr/ui/widgets/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:video_player/video_player.dart';
+
+import '../../models/models.dart';
+import '../../shared/shared.dart';
+
+part 'sign_in_page.dart';
+part 'main_page.dart';
+part 'sign_up_page.dart';
+part 'splash_page.dart';
+part 'onboard_page.dart';
+part 'profile_page.dart';
+part 'feed_page.dart';
+part 'challenge_details.dart';
+part 'quiz_page2.dart';
+part 'result_page2.dart';
+part 'explore_page.dart';
+part 'countdown_page.dart';
+part 'video_player.dart';
+part 'updateProfile.dart';
+part 'updateAccount.dart';
+part 'explore.dart';
+part 'withdraw_page.dart';
