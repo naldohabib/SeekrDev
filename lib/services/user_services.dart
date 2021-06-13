@@ -6,39 +6,12 @@ class UserService {
   var data;
 
   // NOTE : YANG LAMA
-  Future<UserAccount> getUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'access';
-    final value = prefs.get(key) ?? 0;
-
-    String url = "https://bismillah-seekr.herokuapp.com/auth/users/me/";
-
-    http.Response response = await http.get(Uri.parse(url), headers: {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $value'
-    });
-
-    var data = json.decode(response.body);
-    // print(data);
-
-    String email = (data as Map<String, dynamic>)['email'].toString();
-    int id = (data as Map<String, dynamic>)['id'];
-    String username = (data as Map<String, dynamic>)['username'].toString();
-
-    return UserAccount(
-      email: email,
-      id: id,
-      username: username,
-    );
-  }
-
-  // NOTE : NEW
-  // Future<List<UserAccount>> getUser() async {
+  // Future<UserAccount> getUser() async {
   //   final prefs = await SharedPreferences.getInstance();
   //   final key = 'access';
   //   final value = prefs.get(key) ?? 0;
 
-  //   String url = "https://bismillah-seekr.herokuapp.com/api/app-users/user/me";
+  //   String url = "https://bismillah-seekr.herokuapp.com/auth/users/me/";
 
   //   http.Response response = await http.get(Uri.parse(url), headers: {
   //     'Accept': 'application/json',
@@ -46,11 +19,38 @@ class UserService {
   //   });
 
   //   var data = json.decode(response.body);
-  //   List result = data['results'];
-  //   // print(result);
+  //   // print(data);
 
-  //   return result.map((e) => UserAccount.fromJson(e)).toList();
+  //   String email = (data as Map<String, dynamic>)['email'].toString();
+  //   int id = (data as Map<String, dynamic>)['id'];
+  //   String username = (data as Map<String, dynamic>)['username'].toString();
+
+  //   return UserAccount(
+  //     email: email,
+  //     id: id,
+  //     username: username,
+  //   );
   // }
+
+  // NOTE : NEW
+  Future<List<UserAccount>> getUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'access';
+    final value = prefs.get(key) ?? 0;
+
+    String url = "https://bismillah-seekr.herokuapp.com/api/app-users/user/me";
+
+    http.Response response = await http.get(Uri.parse(url), headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $value'
+    });
+
+    var data = json.decode(response.body);
+    List result = data['results'];
+    // print(result);
+
+    return result.map((e) => UserAccount.fromJson(e)).toList();
+  }
 
   Future<List<UserGetProfile>> getUserProfileList() async {
     final prefs = await SharedPreferences.getInstance();
@@ -71,7 +71,8 @@ class UserService {
     return result.map((e) => UserGetProfile.fromJson(e)).toList();
   }
 
-  Future<void> updateAccount(String username, String idAccount,
+  Future<void> updateAccount(
+      String username, String name, String email, String idAccount,
       {int iD}) async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'access';
@@ -85,7 +86,9 @@ class UserService {
       'Accept': 'application/json',
       'Authorization': 'Bearer $value'
     }, body: {
-      "username": "$username"
+      "username": "$username",
+      "name": "$name",
+      "email": "$email",
     });
 
     status = response.body.contains('username');
