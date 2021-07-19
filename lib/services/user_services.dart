@@ -4,6 +4,10 @@ class UserService {
   var status;
   var status2;
   var data;
+  var dataProfile;
+  var statusProfile;
+  var statusProfile2;
+  var statusProfile3;
 
   // NOTE : YANG LAMA
   // Future<UserAccount> getUser() async {
@@ -80,7 +84,8 @@ class UserService {
 
     String url =
         // ignore: unnecessary_brace_in_string_interps
-        "https://bismillah-seekr.herokuapp.com/api-dev/app-users/user/${idAccount ?? iD}/";
+        // "https://bismillah-seekr.herokuapp.com/api-dev/app-users/user/${idAccount ?? iD}/";
+        "https://bismillah-seekr.herokuapp.com/api/app-users/user/${idAccount ?? iD}/";
 
     http.Response response = await http.put(Uri.parse(url), headers: {
       'Accept': 'application/json',
@@ -122,6 +127,41 @@ class UserService {
     //   //   print('username : ${data["username"]}');
     //   // }
     // }
+  }
+
+  Future<void> updateProfile(String phoneNumber, String placeOfBirth, String idProfile,
+      {int iD}) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'access';
+    final value = prefs.get(key) ?? 0;
+
+    String url =
+        "https://bismillah-seekr.herokuapp.com/api/app-users/user-profile/${idProfile ?? iD}/";
+
+    http.Response response = await http.put(Uri.parse(url), headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $value'
+    }, body: {
+      "phoneNumber": "$phoneNumber",
+      "placeOfBirth": "$placeOfBirth",
+    });
+
+    statusProfile = response.body.contains('phoneNumber');
+    statusProfile2 = response.body.contains('placeOfBirth');
+    statusProfile3 = response.body.contains('url');
+
+    dataProfile = json.decode(response.body);
+    // print(data);
+
+    if (statusProfile) {
+      print('phoneNumber : ${dataProfile["phoneNumber"]}');
+    }
+    if (statusProfile2) {
+      print('place : ${dataProfile["placeOfBirth"]}');
+    }
+    if (statusProfile3) {
+      print('url : ${dataProfile["url"]}');
+    }
   }
 
   Future<List<UserProfile>> getUserProfile() async {
